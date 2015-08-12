@@ -1,15 +1,16 @@
-## Put comments here that give an overall description of what your
-## functions do
+## These functions are used to create and access a matrix that caches its
+## own inverse
 
-## Write a short comment describing this function
+## This function creates the caching matrix object.  To actually get the value
+## of a cached matrix m, you must access it using m$get().
 
-makeCacheMatrix <- function(x = matrix()) {
+makeCacheMatrix <- function(m = matrix()) {
   i <- NULL
   set <- function(y) {
-    x <<- y
+    m <<- y
     i <<- NULL
   }
-  get <- function() x
+  get <- function() m
   setsolve <- function(inverse) i <<- inverse
   getsolve <- function() i
   list( set=set, get=get,
@@ -18,17 +19,17 @@ makeCacheMatrix <- function(x = matrix()) {
 }
 
 
-## Write a short comment describing this function
+## This function gets the inverse of the matrix m
 
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
-  i <- x$getsolve()
+cacheSolve <- function(m, ...) {
+        ## Return a matrix that is the inverse of 'm'
+  i <- m$getsolve()
   if(!is.null(i)) {
     message("getting cached data")
     return(i)
   }
-  data <- x$get()
+  data <- m$get()
   i <- solve(data, ...)
-  x$setsolve(i)
+  m$setsolve(i)
   i
 }
